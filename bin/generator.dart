@@ -48,9 +48,11 @@ final _re = RegExp(
 (\/\*[\s\S]*?\*\/|\/\/.*)
 |^(import|export)\s+(\*|{[^}]+}|\w+)(?:\s+(?:as\s+(\w+)\s+)?from\s+'([^']*)')?\s*;
 |(\s+)
-|(})
+|(}(?:\s*;)?)
 |(?:^export\s+(interface|class)\s+(\w+)(?:\s+extends\s+((?:[\w<>]+)(?:\s*,\s*[\w<>]+)*))?\s*{)
 |(?:([\w]+(?:<[^\(]+)?)\(([^\)]*)\)\s*:([^;]+);)
+|(?:const\s+(\w+)\s*=\s*{)
+|(?:(\w+)\s*:\s*(\[|[^\,}]+),?)
       """
         .trim()
         .replaceAll('\r', '')
@@ -72,6 +74,9 @@ enum _Enum {
   functionIdent,
   functionArgs,
   functionType,
+  constIdent,
+  constKey,
+  constValue,
 }
 
 extension NumberParsing on Match {
@@ -122,7 +127,63 @@ class MdcPack {
       if (subStr.isNotEmpty) {
         s.write('@Error{$subStr}');
       }
-      if (match.has(_Enum.whiteSapce)) {
+      if (match.has(_Enum.constKey)) {
+        final _key = match.get(_Enum.constKey);
+        final _value = match.get(_Enum.constValue);
+        s.write("'$_key': ");
+        if (_value == '[') {
+          var i = 0;
+          final _value = data.substring(match.end);
+          List<String> _list;
+          void _d(int d) {
+            while (true) {
+              final _o = _value.indexOf('[', i);
+              final _c = _value.indexOf(']', i);
+              if (_o == -1 || _c < _o) {
+                i = _c + 1;
+                if (d > 0) {
+                  return;
+                } else {
+                  _list = _value
+                      .substring(0, i - 1)
+                      .split(',')
+                      .map((e) => e.replaceAll('\'', '').trim())
+                      .toList(growable: true)
+                        ..removeWhere((e) => e.isEmpty);
+                  return;
+                }
+              } else if (_o < _c) {
+                i = _o + 1;
+                _d(d + 1);
+              }
+            }
+          }
+
+          _d(0);
+
+          final _re = RegExp(r"\s*(?:\.join\('([^']*)'\)),");
+          match = _re.matchAsPrefix(data, match.end + i);
+          if (match.group(1) != null) {
+            s.write("'${_list.join(match.group(1))}',");
+          } else {
+            s.write('$_list');
+          }
+
+//  [
+//     'button:not(:disabled)', '[href]:not([aria-disabled="true"])', 'input:not(:disabled)',
+//     'select:not(:disabled)', 'textarea:not(:disabled)', '[tabindex]:not([tabindex="-1"]):not([aria-disabled="true"])',
+//  ].join(', '),
+
+        } else {
+          s.write(
+            '$_value,',
+          );
+        }
+      } else if (match.has(_Enum.constIdent)) {
+        final _ident = match.get(_Enum.constIdent);
+        iBracketsList.add('const:$_ident');
+        s.write('const $_ident = {');
+      } else if (match.has(_Enum.whiteSapce)) {
         s.write(match.get(_Enum.whiteSapce));
       } else if (match.has(_Enum.comment)) {
         final _comment = match.get(_Enum.comment);
@@ -146,10 +207,8 @@ class MdcPack {
         String getEntity() =>
             _entity == '*' || _entity == null ? '' : ' show $_entity';
         String getAs() => _as != null ? ' as $_as' : '';
-        if (match.get(_Enum.importType) == 'import') {
-          s.write("import '$_from.dart'${getEntity()}${getAs()};");
-        } else if (match.get(_Enum.importType) == 'export' && _from != null) {
-          s.write("export '$_from.dart'${getEntity()}${getAs()};");
+        if (_from != null) {
+          s.write("$_type '$_from.dart'${getEntity()}${getAs()};");
         } else {
           s.write('@ErrorImportOrExport{${match.get(_Enum.full)}}');
         }
@@ -174,7 +233,7 @@ class MdcPack {
         final _type = match.get(_Enum.classType);
         final _ident = match.get(_Enum.classIdent);
         final _extends = match.get(_Enum.classExtends);
-        iBracketsList.add(_ident);
+        iBracketsList.add('$_type:$_ident');
         if (_type == 'interface') {
           s.write('abstract ');
         }
