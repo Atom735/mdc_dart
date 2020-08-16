@@ -49,7 +49,7 @@ final _re = RegExp(
 |^\s*(import|export)\s+(\*|{[^}]+}|\w+)(?:\s+(?:as\s+(\w+)\s+)?from\s+'([^']*)')?\s*;
 |(\s+)
 |(}(?:\s*;)?)
-|(?:^\s*(?:export\s+)?(interface|class)\s+(\w+)(?:\s+extends\s+((?:[\w<>]+)(?:\s*,\s*[\w<>]+)*))?\s*{)
+|(?:^\s*(?:export\s+)?(interface|class)\s+(\w+(?:\<[^\>]*?\>)?)(?:\s+extends\s+((?:[\w<>]+)(?:\s*,\s*[\w<>]+)*))?\s*{)
 |(?:([\w]+(?:<[^\(]+)?)\(([^\)]*)\)\s*:([^;]+);)
 |(?:^\s*(?:export\s+)?const\s+(\w+)\s*=\s*{)
 |(?:(\w+)\s*:\s*(\[|[^\,}]+),?)
@@ -82,6 +82,8 @@ enum _Enum {
   enumIdent,
   classVarSetKey,
   classVarSetValue,
+
+  unknownSymbol,
 }
 
 extension NumberParsing on Match {
@@ -274,6 +276,8 @@ class MdcPack {
           b = true;
         });
         s.write(');');
+      } else if (match.has(_Enum.unknownSymbol)) {
+        s.write(match.get(_Enum.unknownSymbol));
       }
     }
 
