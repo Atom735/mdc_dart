@@ -11,7 +11,24 @@ final _dbIndex = StringBuffer();
 final filesInProc = <File>{};
 final packs = <MdcPack>{};
 
-String mapTypes(final String s) {
+String mapTypes(String s) {
+  s = s.trim();
+  if (s.contains('|')) {
+    final v = s.split('|');
+    var k = -1;
+    var j = -1;
+    for (var i = 0; i < v.length; i++) {
+      if (v[i].trim() != 'null') {
+        k = i;
+        j++;
+      }
+    }
+    if (j == 0) {
+      return mapTypes(v[k]);
+    } else {
+      return s;
+    }
+  }
   switch (s) {
     case 'string':
       return 'String';
@@ -19,9 +36,47 @@ String mapTypes(final String s) {
       return 'num';
     case 'boolean':
       return 'bool';
+    case 'void':
+      return 'void';
     default:
       return s;
   }
+}
+
+final _re = RegExp(
+    r"""
+(\/\*[\s\S]*?\*\/|\/\/.*)
+|^(import|export)\s+(\*|{[^}]+}|\w+)(?:\s+(?:as\s+(\w+)\s+)?from\s+'([^']*)')?\s*;
+|(\s+)
+|(})
+|(?:^export\s+(interface|class)\s+(\w+)(?:\s+extends\s+((?:[\w<>]+)(?:\s*,\s*[\w<>]+)*))?\s*{)
+|(?:([\w]+(?:<[^\(]+)?)\(([^\)]*)\)\s*:([^;]+);)
+      """
+        .trim()
+        .replaceAll('\r', '')
+        .replaceAll('\n', ''),
+    multiLine: true);
+
+enum _Enum {
+  full,
+  comment,
+  importType,
+  importObj,
+  importAs,
+  importFrom,
+  whiteSapce,
+  closeBreket,
+  classType,
+  classIdent,
+  classExtends,
+  functionIdent,
+  functionArgs,
+  functionType,
+}
+
+extension NumberParsing on Match {
+  bool has(final _Enum i) => get(i) != null;
+  String get(final _Enum i) => group(i.index);
 }
 
 class MdcPack {
@@ -49,33 +104,6 @@ class MdcPack {
     ts2dart(File(p.join(dirIn.path, p.setExtension(module, '.ts'))));
   }
 
-  static final re = RegExp(
-      r"""
-(\/\*[\s\S]*?\*\/|\/\/.*)
-|^(import|export)\s+(\*|{[^}]+}|\w+)(?:\s+(?:as\s+(\w+)\s+)?from\s+'([^']*)')?\s*;
-|(\s+)
-|(})
-|(?:^export\s+interface\s+(\w+)(?:\s+extends\s+((?:\w+)(?:\s*,\s*\w+)*))?\s*{)
-|(?:(\w+)\(([^\)]*)\)\s*:\s*(\w+)\s*;)
-      """
-          .trim()
-          .replaceAll('\r', '')
-          .replaceAll('\n', ''),
-      multiLine: true);
-
-  static const reComment = 1;
-  static const reImExPort = 2;
-  static const reImExEntity = 3;
-  static const reImExAs = 4;
-  static const reImExFrom = 5;
-  static const reWhiteSapce = 6;
-  static const reCloseBreket = 7;
-  static const reExportInterface = 8;
-  static const reExportInterfaceExtends = 9;
-  static const reFunctionIdent = 10;
-  static const reFunctionArgs = 11;
-  static const reFunctionRetType = 12;
-
   void ts2dart(File file) {
     if (filesInProc.contains(file)) {
       return;
@@ -88,40 +116,42 @@ class MdcPack {
     var iBracketsList = <String>[];
     var i0 = 0;
     for (Match match;
-        (match = re.matchAsPrefix(data, i0)) != null;
+        (match = _re.matchAsPrefix(data, i0)) != null;
         i0 = match.end) {
       final subStr = data.substring(i0, match.start);
       if (subStr.isNotEmpty) {
         s.write('@Error{$subStr}');
       }
-      if (match.group(reWhiteSapce) != null) {
-        s.write(match.group(reWhiteSapce));
-      } else if (match.group(reComment) != null) {
-        s.write(match.group(reComment));
-        if (match.group(reComment).startsWith('//')) {
+      if (match.has(_Enum.whiteSapce)) {
+        s.write(match.get(_Enum.whiteSapce));
+      } else if (match.has(_Enum.comment)) {
+        final _comment = match.get(_Enum.comment);
+        s.write(_comment);
+        if (_comment.startsWith('//')) {
           s.writeln();
         }
-      } else if (match.group(reImExPort) != null) {
-        final _entity = match.group(reImExEntity) != null
+      } else if (match.has(_Enum.importType)) {
+        final _type = match.get(_Enum.importType);
+        final _entity = match.get(_Enum.importObj) != null
             ? match
-                .group(reImExEntity)
+                .get(_Enum.importObj)
                 .replaceFirst('{', '')
                 .replaceFirst('}', '')
                 .trim()
             : null;
-        final _as = match.group(reImExAs);
+        final _as = match.get(_Enum.importAs);
         final _from = match
-            .group(reImExFrom)
+            .get(_Enum.importFrom)
             ?.replaceAll('@material/', 'package:mdc_dart/src/mdc-');
         String getEntity() =>
             _entity == '*' || _entity == null ? '' : ' show $_entity';
         String getAs() => _as != null ? ' as $_as' : '';
-        if (match.group(reImExPort) == 'import') {
+        if (match.get(_Enum.importType) == 'import') {
           s.write("import '$_from.dart'${getEntity()}${getAs()};");
-        } else if (match.group(reImExPort) == 'export' && _from != null) {
+        } else if (match.get(_Enum.importType) == 'export' && _from != null) {
           s.write("export '$_from.dart'${getEntity()}${getAs()};");
         } else {
-          s.write('@ErrorImportOrExport{${match.group(0)}}');
+          s.write('@ErrorImportOrExport{${match.get(_Enum.full)}}');
         }
         if (_from != null) {
           if (_from.startsWith('package:mdc_dart/src/')) {
@@ -132,28 +162,33 @@ class MdcPack {
                 p.setExtension(_from.substring(2), '.ts'))));
           }
         }
-      } else if (match.group(reCloseBreket) != null) {
-        final _match = match.group(reCloseBreket);
+      } else if (match.has(_Enum.closeBreket)) {
+        final _match = match.get(_Enum.closeBreket);
         if (iBracketsList.isEmpty) {
           s.write('@Error{$_match}');
         } else {
           final _l = iBracketsList.removeLast();
           s.write('$_match /* $_l */');
         }
-      } else if (match.group(reExportInterface) != null) {
-        final _ident = match.group(reExportInterface);
-        final _extends = match.group(reExportInterfaceExtends);
+      } else if (match.has(_Enum.classIdent)) {
+        final _type = match.get(_Enum.classType);
+        final _ident = match.get(_Enum.classIdent);
+        final _extends = match.get(_Enum.classExtends);
         iBracketsList.add(_ident);
+        if (_type == 'interface') {
+          s.write('abstract ');
+        }
+        s.write('class $_ident');
         if (_extends == null) {
-          s.write('abstract class $_ident {');
+          s.write(' {');
         } else {
-          s.writeln('abstract class $_ident');
+          s.writeln();
           s.write('    implements $_extends {');
         }
-      } else if (match.group(reFunctionIdent) != null) {
-        final _retType = match.group(reFunctionRetType);
-        final _ident = match.group(reFunctionIdent);
-        final _args = match.group(reFunctionArgs);
+      } else if (match.has(_Enum.functionIdent)) {
+        final _retType = match.get(_Enum.functionType);
+        final _ident = match.get(_Enum.functionIdent);
+        final _args = match.get(_Enum.functionArgs);
 
         var b = false;
         s.write('${mapTypes(_retType)} $_ident(');
