@@ -18,12 +18,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-@use "package:mdc_dart/scss/feature-targeting/functions" as feature-targeting-functions;
-@use "package:mdc_dart/scss/feature-targeting/mixins" as feature-targeting-mixins;
-@use "package:mdc_dart/scss/shape/mixins" as shape-mixins;
-@use "package:mdc_dart/scss/shape/functions" as shape-functions;
-@use "package:mdc_dart/scss/theme/mixins" as theme-mixins;
-@use "package:mdc_dart/scss/typography/mixins" as typography-mixins;
+@use "package:mdc_dart/scss/mdc-feature-targeting/functions" as feature-targeting-functions;
+@use "package:mdc_dart/scss/mdc-feature-targeting/mixins" as feature-targeting-mixins;
+@use "package:mdc_dart/scss/mdc-shape/mixins" as shape-mixins;
+@use "package:mdc_dart/scss/mdc-shape/functions" as shape-functions;
+@use "package:mdc_dart/scss/mdc-theme/mixins" as theme-mixins;
+@use "package:mdc_dart/scss/mdc-typography/mixins" as typography-mixins;
 @use "./variables";
 
 @mixin core-styles($query: feature-targeting-functions.all()) {

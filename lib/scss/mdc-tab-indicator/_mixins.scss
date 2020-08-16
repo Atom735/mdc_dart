@@ -20,10 +20,10 @@
 // THE SOFTWARE.
 //
 
-@use "package:mdc_dart/scss/animation/variables";
-@use "package:mdc_dart/scss/theme/mixins" as theme-mixins;
-@use "package:mdc_dart/scss/feature-targeting/functions";
-@use "package:mdc_dart/scss/feature-targeting/mixins" as feature-targeting-mixins;
+@use "package:mdc_dart/scss/mdc-animation/variables";
+@use "package:mdc_dart/scss/mdc-theme/mixins" as theme-mixins;
+@use "package:mdc_dart/scss/mdc-feature-targeting/functions";
+@use "package:mdc_dart/scss/mdc-feature-targeting/mixins" as feature-targeting-mixins;
 
 @mixin core-styles($query: functions.all()) {
   $feat-structure: functions.create-target($query, structure);

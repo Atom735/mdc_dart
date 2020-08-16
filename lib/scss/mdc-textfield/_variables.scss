@@ -21,10 +21,10 @@
 //
 
 @use "sass:color";
-@use "package:mdc_dart/scss/density/variables" as density-variables;
-@use "package:mdc_dart/scss/floating-label/variables" as floating-label-variables;
-@use "package:mdc_dart/scss/notched-outline/variables" as notched-outline-variables;
-@use "package:mdc_dart/scss/theme/variables" as theme-variables;
+@use "package:mdc_dart/scss/mdc-density/variables" as density-variables;
+@use "package:mdc_dart/scss/mdc-floating-label/variables" as floating-label-variables;
+@use "package:mdc_dart/scss/mdc-notched-outline/variables" as notched-outline-variables;
+@use "package:mdc_dart/scss/mdc-theme/variables" as theme-variables;
 
 ///
 /// Returns outlined text field floating label position for given height.

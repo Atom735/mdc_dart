@@ -18,8 +18,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-@use "package:mdc_dart/scss/density/variables" as density-variables;
-@use "package:mdc_dart/scss/theme/variables" as theme-variables;
+@use "package:mdc_dart/scss/mdc-density/variables" as density-variables;
+@use "package:mdc_dart/scss/mdc-theme/variables" as theme-variables;
 
 $ripple-target: '.mdc-list-item__ripple';
 

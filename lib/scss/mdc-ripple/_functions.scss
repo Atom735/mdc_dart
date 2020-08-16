@@ -21,8 +21,8 @@
 //
 
 @use "sass:map";
-@use "package:mdc_dart/scss/theme/functions";
-@use "package:mdc_dart/scss/theme/variables" as theme-variables; // for mdc-theme-prop-value
+@use "package:mdc_dart/scss/mdc-theme/functions";
+@use "package:mdc_dart/scss/mdc-theme/variables" as theme-variables; // for mdc-theme-prop-value
 @use "./variables";
 
 //

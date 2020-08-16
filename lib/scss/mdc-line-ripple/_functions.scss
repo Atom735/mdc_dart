@@ -20,7 +20,7 @@
 // THE SOFTWARE.
 //
 
-@use "package:mdc_dart/scss/animation/variables";
+@use "package:mdc_dart/scss/mdc-animation/variables";
 
 @function transition-value($property) {
   @return #{$property} 180ms variables.$standard-curve-timing-function;

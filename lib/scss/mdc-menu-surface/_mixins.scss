@@ -20,13 +20,13 @@
 // THE SOFTWARE.
 //
 
-@use "package:mdc_dart/scss/feature-targeting/functions";
-@use "package:mdc_dart/scss/feature-targeting/mixins" as feature-targeting-mixins;
-@use "package:mdc_dart/scss/theme/mixins" as theme-mixins;
-@use "package:mdc_dart/scss/shape/mixins" as shape-mixins;
-@use "package:mdc_dart/scss/animation/variables" as animation-variables;
-@use "package:mdc_dart/scss/elevation/mixins" as elevation-mixins;
-@use "package:mdc_dart/scss/rtl/mixins" as rtl-mixins;
+@use "package:mdc_dart/scss/mdc-feature-targeting/functions";
+@use "package:mdc_dart/scss/mdc-feature-targeting/mixins" as feature-targeting-mixins;
+@use "package:mdc_dart/scss/mdc-theme/mixins" as theme-mixins;
+@use "package:mdc_dart/scss/mdc-shape/mixins" as shape-mixins;
+@use "package:mdc_dart/scss/mdc-animation/variables" as animation-variables;
+@use "package:mdc_dart/scss/mdc-elevation/mixins" as elevation-mixins;
+@use "package:mdc_dart/scss/mdc-rtl/mixins" as rtl-mixins;
 @use "./variables";
 
 //

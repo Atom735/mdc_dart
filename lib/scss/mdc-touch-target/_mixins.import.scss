@@ -1,4 +1,4 @@
-@forward "package:mdc_dart/scss/base" as mdc-base-*;
-@forward "package:mdc_dart/scss/feature-targeting" as mdc-feature-*;
+@forward "package:mdc_dart/scss/mdc-base" as mdc-base-*;
+@forward "package:mdc_dart/scss/mdc-feature-targeting" as mdc-feature-*;
 @forward "./index" as mdc-touch-target-* hide mdc-touch-target-touch-target;
 @forward "./index" as mdc-* show mdc-touch-target;

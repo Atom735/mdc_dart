@@ -21,8 +21,8 @@
 //
 
 @use "sass:map";
-@use "package:mdc_dart/scss/feature-targeting/functions" as feature-targeting-functions;
-@use "package:mdc_dart/scss/feature-targeting/mixins";
+@use "package:mdc_dart/scss/mdc-feature-targeting/functions" as feature-targeting-functions;
+@use "package:mdc_dart/scss/mdc-feature-targeting/mixins";
 @use "./custom-properties";
 @use "./gss";
 @use "./variables";

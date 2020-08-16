@@ -20,12 +20,12 @@
 // THE SOFTWARE.
 //
 
-@use "package:mdc_dart/scss/animation/variables" as animation-variables;
-@use "package:mdc_dart/scss/density/functions" as density-functions;
-@use "package:mdc_dart/scss/feature-targeting/functions" as feature-targeting-functions;
-@use "package:mdc_dart/scss/feature-targeting/mixins" as feature-targeting-mixins;
-@use "package:mdc_dart/scss/tab-scroller/mixins" as tab-scroller-mixins;
-@use "package:mdc_dart/scss/tab/mixins" as tab-mixins;
+@use "package:mdc_dart/scss/mdc-animation/variables" as animation-variables;
+@use "package:mdc_dart/scss/mdc-density/functions" as density-functions;
+@use "package:mdc_dart/scss/mdc-feature-targeting/functions" as feature-targeting-functions;
+@use "package:mdc_dart/scss/mdc-feature-targeting/mixins" as feature-targeting-mixins;
+@use "package:mdc_dart/scss/mdc-tab-scroller/mixins" as tab-scroller-mixins;
+@use "package:mdc_dart/scss/mdc-tab/mixins" as tab-mixins;
 @use "./variables";
 
 @mixin core-styles($query: feature-targeting-functions.all()) {

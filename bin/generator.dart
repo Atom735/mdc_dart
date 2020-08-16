@@ -4,9 +4,12 @@ import 'dart:io';
 import 'package:path/path.dart' as p;
 
 const pathIn = r'D:\github\material-components-web-7.0.0\packages';
-const pathOut = r'D:\github\mdc_dart\lib';
+const pathOut = r'D:\github\mdc_dart\lib\src';
+const pathOutScss = r'D:\github\mdc_dart\lib\scss';
 
-final _DbIndex = StringBuffer();
+final _dbIndex = StringBuffer();
+final filesInProc = <File>{};
+final packs = <MdcPack>{};
 
 class MdcPack {
   final Directory dirIn;
@@ -17,70 +20,151 @@ class MdcPack {
 
   MdcPack.fromJson(this.dirIn, this.dirOut, dynamic json)
       : name = (json['name'] as String)
-            .replaceAll('@material/', '')
+            .replaceAll('@material/', 'mdc-')
             .replaceAll('-', '_'),
         main = p
             .basenameWithoutExtension(json['main'] as String)
             .replaceAll('dist/', ''),
         module = json['module'] {
-    dirOut.createSync();
+    if (dirOut.existsSync()) {
+      return;
+    }
 
-    ts2dartIndex(File(p.join(dirIn.path, p.setExtension(module, '.ts'))));
+    dirOut.createSync();
+    packs.add(this);
+
+    ts2dart(File(p.join(dirIn.path, p.setExtension(module, '.ts'))));
   }
 
-  void ts2dartIndex(File file) {
-    final s = StringBuffer();
-    s.writeln("@JS('$main')");
-    s.writeln('library $name;');
-    s.writeln('');
-    s.writeln("import 'dart:html';");
-    s.writeln("import 'package:js/js.dart';");
-    s.writeln('');
-    final lines = LineSplitter().convert(file.readAsStringSync());
+  static final re = RegExp(
+      r"""
+(\/\*[\s\S]*?\*\/|\/\/.*)
+|^(import|export)\s+(\*|{[^}]+}|\w+)(?:\s+(?:as\s+(\w+)\s+)?from\s+'([^']*)')?\s*;
+|(\s+)
+|(})
+|(?:^export\s+interface\s+(\w+)(?:\s+extends\s+((?:\w+)(?:\s*,\s*\w+)*))?\s*{)
+      """
+          .trim()
+          .replaceAll('\r', '')
+          .replaceAll('\n', ''),
+      multiLine: true);
 
-    var inCommentBlock = false;
-    for (var line in lines) {
-      if (line.isEmpty) {
-      } else if (inCommentBlock) {
-        if (line.endsWith('*/')) {
-          inCommentBlock = false;
-          continue;
+  static const reComment = 1;
+  static const reImExPort = 2;
+  static const reImExEntity = 3;
+  static const reImExAs = 4;
+  static const reImExFrom = 5;
+  static const reWhiteSapce = 6;
+  static const reCloseBreket = 7;
+  static const reExportInterface = 8;
+  static const reExportInterfaceExtends = 9;
+
+  void ts2dart(File file) {
+    if (filesInProc.contains(file)) {
+      return;
+    } else {
+      filesInProc.add(file);
+    }
+    final s = StringBuffer();
+    final data = file.readAsStringSync();
+
+    var iBracketsList = <String>[];
+    var i0 = 0;
+    for (Match match;
+        (match = re.matchAsPrefix(data, i0)) != null;
+        i0 = match.end) {
+      final subStr = data.substring(i0, match.start);
+      if (subStr.isNotEmpty) {
+        s.write('@Error{$subStr}');
+      }
+      if (match.group(reWhiteSapce) != null) {
+        s.write(match.group(reWhiteSapce));
+      } else if (match.group(reComment) != null) {
+        s.write(match.group(reComment));
+        if (match.group(reComment).startsWith('//')) {
+          s.writeln();
         }
-      } else if (line.startsWith('/*')) {
-        inCommentBlock = true;
-        continue;
-      } else {
-        s.writeln('// ERROR_LINE: $line');
-        _DbIndex.writeln(line);
+      } else if (match.group(reImExPort) != null) {
+        final _entity = match.group(reImExEntity) != null
+            ? match
+                .group(reImExEntity)
+                .replaceFirst('{', '')
+                .replaceFirst('}', '')
+                .trim()
+            : null;
+        final _as = match.group(reImExAs);
+        final _from = match
+            .group(reImExFrom)
+            ?.replaceAll('@material/', 'package:mdc_dart/src/mdc-');
+        String getEntity() =>
+            _entity == '*' || _entity == null ? '' : ' show $_entity';
+        String getAs() => _as != null ? ' as $_as' : '';
+        if (match.group(reImExPort) == 'import') {
+          s.write("import '$_from.dart'${getEntity()}${getAs()};");
+        } else if (match.group(reImExPort) == 'export' && _from != null) {
+          s.write("export '$_from.dart'${getEntity()}${getAs()};");
+        } else {
+          s.write('@ErrorImportOrExport{${match.group(0)}}');
+        }
+        if (_from != null) {
+          if (_from.startsWith('package:mdc_dart/src/')) {
+            ts2dart(File(
+                p.join(pathIn, p.setExtension(_from.substring(21), '.ts'))));
+          } else if (_from.startsWith('./')) {
+            ts2dart(File(p.join(p.dirname(file.path),
+                p.setExtension(_from.substring(2), '.ts'))));
+          }
+        }
+      } else if (match.group(reCloseBreket) != null) {
+        final _match = match.group(reCloseBreket);
+        if (iBracketsList.isEmpty) {
+          s.write('@Error{$_match}');
+        } else {
+          final _l = iBracketsList.removeLast();
+          s.write('$_match /* $_l */');
+        }
+      } else if (match.group(reExportInterface) != null) {
+        final _ident = match.group(reExportInterface);
+        final _extends = match.group(reExportInterfaceExtends);
+        iBracketsList.add(_ident);
+        if (_extends == null) {
+          s.write('abstract class $_ident {');
+        } else {
+          s.writeln('abstract class $_ident');
+          s.write('    implements $_extends {');
+        }
       }
     }
 
-    if (inCommentBlock) {
-      s.writeln('// ERROR: CommentBlock not closed');
+    final subStr = data.substring(i0);
+    if (subStr.isNotEmpty) {
+      s.write('@Error{$subStr}');
     }
 
-    File(p.join(dirOut.path, p.setExtension(p.basename(file.path), '.dart')))
-        .writeAsStringSync(s.toString());
+    final _pathOut = p.join(pathOut,
+        p.setExtension(file.path.substring(pathIn.length + 1), '.dart'));
+    Directory(p.dirname(_pathOut)).createSync(recursive: true);
+    File(_pathOut).writeAsStringSync(s.toString());
   }
 }
 
 void main(List<String> args) {
-  Directory(p.join(pathOut, 'scss')).createSync(recursive: false);
-  Directory(p.join(pathOut, 'src')).createSync(recursive: false);
+  if (Directory(pathOut).existsSync()) {
+    Directory(pathOut).deleteSync(recursive: true);
+  }
+  Directory(pathOut).createSync(recursive: true);
+  Directory(pathOutScss).createSync(recursive: true);
 
   Directory(pathIn).listSync(recursive: false).forEach((dirPack) {
     if (dirPack is Directory) {
       final packName = p.basename(dirPack.path);
-
-      final libScss = Directory(p.join(pathOut, 'scss', packName))
-        ..createSync(recursive: false);
 
       final filePack = File(p.join(dirPack.path, 'package.json'));
       if (filePack.existsSync()) {
         final jsonPack = jsonDecode(filePack.readAsStringSync());
         if (jsonPack['module'] != null) {
           MdcPack.fromJson(
-              dirPack, Directory(p.join(pathOut, 'src', packName)), jsonPack);
+              dirPack, Directory(p.join(pathOut, packName)), jsonPack);
         } else {
           print('Folder havent package module: $dirPack');
         }
@@ -88,6 +172,8 @@ void main(List<String> args) {
         print('Folder havent package json: $dirPack');
       }
 
+      final libScss = Directory(p.join(pathOutScss, packName))
+        ..createSync(recursive: false);
       dirPack.listSync(recursive: false).forEach((file) {
         if (file is File) {
           final fileName = p.basename(file.path);
@@ -95,7 +181,7 @@ void main(List<String> args) {
           if (fileExt == '.scss') {
             File(p.join(libScss.path, fileName)).writeAsStringSync(file
                 .readAsStringSync()
-                .replaceAll('@material/', 'package:mdc_dart/scss/'));
+                .replaceAll('@material/', 'package:mdc_dart/scss/mdc-'));
           }
         }
       });
@@ -104,5 +190,5 @@ void main(List<String> args) {
     }
   });
 
-  File(p.join(pathOut, '_index.ts')).writeAsStringSync(_DbIndex.toString());
+  File(p.join(pathOut, '_index.ts')).writeAsStringSync(_dbIndex.toString());
 }

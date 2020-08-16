@@ -20,7 +20,7 @@
 // THE SOFTWARE.
 //
 
-@use "package:mdc_dart/scss/base/mixins" as base-mixins;
+@use "package:mdc_dart/scss/mdc-base/mixins" as base-mixins;
 @use "./mixins";
 
 @include base-mixins.emit-once('mdc-floating-label') {

@@ -22,16 +22,16 @@
 
 @use "sass:color";
 @use "sass:map";
-@use "package:mdc_dart/scss/animation/functions" as functions2;
-@use "package:mdc_dart/scss/animation/variables" as variables2;
-@use "package:mdc_dart/scss/base/mixins" as base-mixins;
-@use "package:mdc_dart/scss/feature-targeting/functions" as feature-targeting-functions;
-@use "package:mdc_dart/scss/feature-targeting/mixins" as feature-targeting-mixins;
-@use "package:mdc_dart/scss/theme/mixins" as theme-mixins;
+@use "package:mdc_dart/scss/mdc-animation/functions" as functions2;
+@use "package:mdc_dart/scss/mdc-animation/variables" as variables2;
+@use "package:mdc_dart/scss/mdc-base/mixins" as base-mixins;
+@use "package:mdc_dart/scss/mdc-feature-targeting/functions" as feature-targeting-functions;
+@use "package:mdc_dart/scss/mdc-feature-targeting/mixins" as feature-targeting-mixins;
+@use "package:mdc_dart/scss/mdc-theme/mixins" as theme-mixins;
 @use "./functions";
 @use "./keyframes";
 @use "./variables";
-@use "package:mdc_dart/scss/theme/variables" as theme-variables;
+@use "package:mdc_dart/scss/mdc-theme/variables" as theme-variables;
 
 @mixin core-styles($query: feature-targeting-functions.all()) {
   // postcss-bem-linter: define ripple-surface

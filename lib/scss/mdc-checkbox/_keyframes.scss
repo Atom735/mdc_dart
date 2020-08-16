@@ -20,8 +20,8 @@
 // THE SOFTWARE.
 //
 
-@use "package:mdc_dart/scss/animation/variables" as animation-variables;
-@use "package:mdc_dart/scss/theme/mixins";
+@use "package:mdc_dart/scss/mdc-animation/variables" as animation-variables;
+@use "package:mdc_dart/scss/mdc-theme/mixins";
 @use "./variables";
 
 @mixin container-keyframes_(

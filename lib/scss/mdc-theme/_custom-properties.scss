@@ -25,7 +25,7 @@
 
 /// When true, add an additional property/value declaration before a custom
 /// property's `var()` to support IE. Configure
-/// `package:mdc_dart/scss/theme/custom-properties` with this variable set to false to
+/// `package:mdc_dart/scss/mdc-theme/custom-properties` with this variable set to false to
 /// disable IE fallback values for custom properties.
 $ie-fallback: true !default;
 

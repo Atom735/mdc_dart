@@ -22,10 +22,10 @@
 
 @use "sass:list";
 @use "sass:meta";
-@use "package:mdc_dart/scss/feature-targeting/functions" as feature-targeting-functions;
-@use "package:mdc_dart/scss/feature-targeting/mixins" as feature-targeting-mixins;
-@use "package:mdc_dart/scss/rtl/mixins" as rtl-mixins;
-@use "package:mdc_dart/scss/theme/mixins" as theme;
+@use "package:mdc_dart/scss/mdc-feature-targeting/functions" as feature-targeting-functions;
+@use "package:mdc_dart/scss/mdc-feature-targeting/mixins" as feature-targeting-mixins;
+@use "package:mdc_dart/scss/mdc-rtl/mixins" as rtl-mixins;
+@use "package:mdc_dart/scss/mdc-theme/mixins" as theme;
 @use "./variables";
 @use "./functions";
 

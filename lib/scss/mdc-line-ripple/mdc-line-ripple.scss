@@ -20,7 +20,7 @@
 // THE SOFTWARE.
 //
 
-@use "package:mdc_dart/scss/base/mixins" as base-mixins;
+@use "package:mdc_dart/scss/mdc-base/mixins" as base-mixins;
 @use "./mixins";
 
 // Line Ripple is intended for use by multiple components, but its styles should only be emitted once when bundled

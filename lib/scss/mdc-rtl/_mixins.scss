@@ -21,7 +21,7 @@
 //
 
 @use "sass:list";
-@use "package:mdc_dart/scss/theme/mixins" as theme;
+@use "package:mdc_dart/scss/mdc-theme/mixins" as theme;
 @use "./variables";
 
 // Creates a rule that will be applied when an MDC Web component is within the context of an RTL layout.

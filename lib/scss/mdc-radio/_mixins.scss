@@ -21,16 +21,16 @@
 //
 
 @use "sass:map";
-@use "package:mdc_dart/scss/animation/functions" as functions2;
-@use "package:mdc_dart/scss/density/functions" as density-functions;
-@use "package:mdc_dart/scss/feature-targeting/functions" as feature-targeting-functions;
-@use "package:mdc_dart/scss/feature-targeting/mixins" as feature-targeting-mixins;
-@use "package:mdc_dart/scss/ripple/mixins" as ripple-mixins;
-@use "package:mdc_dart/scss/ripple/variables" as ripple-variables;
-@use "package:mdc_dart/scss/theme/mixins" as theme-mixins;
-@use "package:mdc_dart/scss/theme/variables" as variables2;
-@use "package:mdc_dart/scss/touch-target/mixins" as touch-target-mixins;
-@use "package:mdc_dart/scss/touch-target/variables" as touch-target-variables;
+@use "package:mdc_dart/scss/mdc-animation/functions" as functions2;
+@use "package:mdc_dart/scss/mdc-density/functions" as density-functions;
+@use "package:mdc_dart/scss/mdc-feature-targeting/functions" as feature-targeting-functions;
+@use "package:mdc_dart/scss/mdc-feature-targeting/mixins" as feature-targeting-mixins;
+@use "package:mdc_dart/scss/mdc-ripple/mixins" as ripple-mixins;
+@use "package:mdc_dart/scss/mdc-ripple/variables" as ripple-variables;
+@use "package:mdc_dart/scss/mdc-theme/mixins" as theme-mixins;
+@use "package:mdc_dart/scss/mdc-theme/variables" as variables2;
+@use "package:mdc_dart/scss/mdc-touch-target/mixins" as touch-target-mixins;
+@use "package:mdc_dart/scss/mdc-touch-target/variables" as touch-target-variables;
 @use "./functions";
 @use "./variables";
 

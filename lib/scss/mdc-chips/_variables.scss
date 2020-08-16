@@ -21,9 +21,9 @@
 //
 
 @use "sass:color";
-@use "package:mdc_dart/scss/animation/variables" as animation-variables;
-@use "package:mdc_dart/scss/density/variables" as density-variables;
-@use "package:mdc_dart/scss/theme/variables" as theme-variables;
+@use "package:mdc_dart/scss/mdc-animation/variables" as animation-variables;
+@use "package:mdc_dart/scss/mdc-density/variables" as density-variables;
+@use "package:mdc_dart/scss/mdc-theme/variables" as theme-variables;
 
 $fill-color-default: color.mix(
   theme-variables.prop-value(on-surface),

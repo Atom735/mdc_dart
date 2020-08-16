@@ -21,9 +21,9 @@
 //
 
 @use "sass:color";
-@use "package:mdc_dart/scss/density/variables" as density-variables;
-@use "package:mdc_dart/scss/notched-outline/variables" as notched-outline-variables;
-@use "package:mdc_dart/scss/theme/variables";
+@use "package:mdc_dart/scss/mdc-density/variables" as density-variables;
+@use "package:mdc_dart/scss/mdc-notched-outline/variables" as notched-outline-variables;
+@use "package:mdc_dart/scss/mdc-theme/variables";
 
 @function get-outlined-label-position-y($select-anchor-height) {
   @return $select-anchor-height / 2 +

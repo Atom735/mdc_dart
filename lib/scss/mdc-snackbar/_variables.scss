@@ -21,8 +21,8 @@
 //
 
 @use "sass:color";
-@use "package:mdc_dart/scss/theme/functions";
-@use "package:mdc_dart/scss/theme/variables"; // for mdc-theme-prop-value() function
+@use "package:mdc_dart/scss/mdc-theme/functions";
+@use "package:mdc_dart/scss/mdc-theme/variables"; // for mdc-theme-prop-value() function
 
 $fill-color: color.mix(
   variables.prop-value(on-surface),

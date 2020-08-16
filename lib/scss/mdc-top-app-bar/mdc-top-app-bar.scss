@@ -20,10 +20,10 @@
 // THE SOFTWARE.
 //
 
-@use "package:mdc_dart/scss/elevation/mixins" as elevation-mixins;
-@use "package:mdc_dart/scss/animation/variables" as animation-variables;
-@use "package:mdc_dart/scss/rtl/mixins" as rtl-mixins;
-@use "package:mdc_dart/scss/typography/mixins" as typography-mixins;
+@use "package:mdc_dart/scss/mdc-elevation/mixins" as elevation-mixins;
+@use "package:mdc_dart/scss/mdc-animation/variables" as animation-variables;
+@use "package:mdc_dart/scss/mdc-rtl/mixins" as rtl-mixins;
+@use "package:mdc_dart/scss/mdc-typography/mixins" as typography-mixins;
 @use "./mixins";
 @use "./variables";
 

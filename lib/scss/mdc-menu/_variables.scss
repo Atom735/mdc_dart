@@ -20,8 +20,8 @@
 // THE SOFTWARE.
 //
 
-@use "package:mdc_dart/scss/theme/mixins";
-@use "package:mdc_dart/scss/theme/variables";
+@use "package:mdc_dart/scss/mdc-theme/mixins";
+@use "package:mdc_dart/scss/mdc-theme/variables";
 
 $ink-color: rgba(
   variables.prop-value(on-surface),

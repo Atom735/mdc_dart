@@ -20,8 +20,8 @@
 // THE SOFTWARE.
 //
 
-@use "package:mdc_dart/scss/density/variables" as density-variables;
-@use "package:mdc_dart/scss/tab/variables" as tab-variables;
+@use "package:mdc_dart/scss/mdc-density/variables" as density-variables;
+@use "package:mdc_dart/scss/mdc-tab/variables" as tab-variables;
 
 $height: tab-variables.$height !default;
 $minimum-height: 30px !default;

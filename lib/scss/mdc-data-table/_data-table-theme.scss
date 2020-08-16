@@ -25,21 +25,21 @@
 // selectors.
 
 @use 'sass:list';
-@use 'package:mdc_dart/scss/animation/functions';
-@use 'package:mdc_dart/scss/checkbox/mixins' as checkbox-mixins;
-@use 'package:mdc_dart/scss/density/functions' as density-functions;
-@use 'package:mdc_dart/scss/elevation/mixins';
-@use 'package:mdc_dart/scss/feature-targeting/functions' as feature-targeting-functions;
-@use 'package:mdc_dart/scss/feature-targeting/mixins' as feature-targeting-mixins;
-@use 'package:mdc_dart/scss/icon-button/mixins' as icon-button-mixins;
-@use 'package:mdc_dart/scss/rtl/mixins' as rtl-mixins;
-@use 'package:mdc_dart/scss/shape/mixins' as shape-mixins;
-@use 'package:mdc_dart/scss/theme/mixins' as theme-mixins;
-@use 'package:mdc_dart/scss/theme/variables' as variables2; // for mdc-theme-prop-value.
-@use 'package:mdc_dart/scss/typography/mixins' as typography-mixins;
-@use 'package:mdc_dart/scss/theme/variables' as theme-variables;
-@use 'package:mdc_dart/scss/density/variables' as density-variables;
-@use 'package:mdc_dart/scss/select/mixins' as select-theme;
+@use 'package:mdc_dart/scss/mdc-animation/functions';
+@use 'package:mdc_dart/scss/mdc-checkbox/mixins' as checkbox-mixins;
+@use 'package:mdc_dart/scss/mdc-density/functions' as density-functions;
+@use 'package:mdc_dart/scss/mdc-elevation/mixins';
+@use 'package:mdc_dart/scss/mdc-feature-targeting/functions' as feature-targeting-functions;
+@use 'package:mdc_dart/scss/mdc-feature-targeting/mixins' as feature-targeting-mixins;
+@use 'package:mdc_dart/scss/mdc-icon-button/mixins' as icon-button-mixins;
+@use 'package:mdc_dart/scss/mdc-rtl/mixins' as rtl-mixins;
+@use 'package:mdc_dart/scss/mdc-shape/mixins' as shape-mixins;
+@use 'package:mdc_dart/scss/mdc-theme/mixins' as theme-mixins;
+@use 'package:mdc_dart/scss/mdc-theme/variables' as variables2; // for mdc-theme-prop-value.
+@use 'package:mdc_dart/scss/mdc-typography/mixins' as typography-mixins;
+@use 'package:mdc_dart/scss/mdc-theme/variables' as theme-variables;
+@use 'package:mdc_dart/scss/mdc-density/variables' as density-variables;
+@use 'package:mdc_dart/scss/mdc-select/mixins' as select-theme;
 
 $fill-color: surface !default;
 $header-row-fill-color: inherit !default;

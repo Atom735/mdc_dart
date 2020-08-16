@@ -1,2 +1,2 @@
-@forward "package:mdc_dart/scss/animation" as mdc-animation-* hide mdc-animation-enter, mdc-animation-exit-permanent, mdc-animation-exit-temporary, mdc-animation-standard;
+@forward "package:mdc_dart/scss/mdc-animation" as mdc-animation-* hide mdc-animation-enter, mdc-animation-exit-permanent, mdc-animation-exit-temporary, mdc-animation-standard;
 @forward "./index" as mdc-line-ripple-* hide mdc-line-ripple-core-styles, mdc-line-ripple-color;

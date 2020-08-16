@@ -1,4 +1,4 @@
-@forward "package:mdc_dart/scss/feature-targeting" as mdc-feature-*;
-@forward "package:mdc_dart/scss/rtl" as mdc-rtl-* hide mdc-rtl-rtl;
-@forward "package:mdc_dart/scss/rtl" as mdc-* hide mdc-property-, mdc-reflexive, mdc-reflexive-box, mdc-reflexive-position, mdc-reflexive-property;
+@forward "package:mdc_dart/scss/mdc-feature-targeting" as mdc-feature-*;
+@forward "package:mdc_dart/scss/mdc-rtl" as mdc-rtl-* hide mdc-rtl-rtl;
+@forward "package:mdc_dart/scss/mdc-rtl" as mdc-* hide mdc-property-, mdc-reflexive, mdc-reflexive-box, mdc-reflexive-position, mdc-reflexive-property;
 @forward "./index" as mdc-shape-*;

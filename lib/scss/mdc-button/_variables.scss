@@ -20,8 +20,8 @@
 // THE SOFTWARE.
 //
 
-@use "package:mdc_dart/scss/density/variables" as density-variables;
-@use "package:mdc_dart/scss/theme/variables" as theme-variables; // for mdc-theme-prop-value
+@use "package:mdc_dart/scss/mdc-density/variables" as density-variables;
+@use "package:mdc_dart/scss/mdc-theme/variables" as theme-variables; // for mdc-theme-prop-value
 
 $height: 36px !default;
 $horizontal-padding: 8px !default;

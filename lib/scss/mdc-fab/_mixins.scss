@@ -18,21 +18,21 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-@use "package:mdc_dart/scss/animation/functions" as animation-functions;
-@use "package:mdc_dart/scss/elevation/mixins" as elevation-mixins;
-@use "package:mdc_dart/scss/elevation/variables" as elevation-variables;
-@use "package:mdc_dart/scss/feature-targeting/functions" as feature-targeting-functions;
-@use "package:mdc_dart/scss/feature-targeting/mixins" as feature-targeting-mixins;
-@use "package:mdc_dart/scss/dom/mixins" as dom-mixins;
-@use "package:mdc_dart/scss/ripple/mixins" as ripple-mixins;
-@use "package:mdc_dart/scss/ripple/variables" as variables2;
-@use "package:mdc_dart/scss/rtl/mixins" as rtl-mixins;
-@use "package:mdc_dart/scss/shape/mixins" as shape-mixins;
-@use "package:mdc_dart/scss/shape/functions" as shape-functions;
-@use "package:mdc_dart/scss/theme/functions" as theme-functions;
-@use "package:mdc_dart/scss/theme/mixins" as theme-mixins;
-@use "package:mdc_dart/scss/touch-target/mixins" as touch-target-mixins;
-@use "package:mdc_dart/scss/typography/mixins" as typography-mixins;
+@use "package:mdc_dart/scss/mdc-animation/functions" as animation-functions;
+@use "package:mdc_dart/scss/mdc-elevation/mixins" as elevation-mixins;
+@use "package:mdc_dart/scss/mdc-elevation/variables" as elevation-variables;
+@use "package:mdc_dart/scss/mdc-feature-targeting/functions" as feature-targeting-functions;
+@use "package:mdc_dart/scss/mdc-feature-targeting/mixins" as feature-targeting-mixins;
+@use "package:mdc_dart/scss/mdc-dom/mixins" as dom-mixins;
+@use "package:mdc_dart/scss/mdc-ripple/mixins" as ripple-mixins;
+@use "package:mdc_dart/scss/mdc-ripple/variables" as variables2;
+@use "package:mdc_dart/scss/mdc-rtl/mixins" as rtl-mixins;
+@use "package:mdc_dart/scss/mdc-shape/mixins" as shape-mixins;
+@use "package:mdc_dart/scss/mdc-shape/functions" as shape-functions;
+@use "package:mdc_dart/scss/mdc-theme/functions" as theme-functions;
+@use "package:mdc_dart/scss/mdc-theme/mixins" as theme-mixins;
+@use "package:mdc_dart/scss/mdc-touch-target/mixins" as touch-target-mixins;
+@use "package:mdc_dart/scss/mdc-typography/mixins" as typography-mixins;
 @use "./variables";
 
 $ripple-target: '.mdc-fab__ripple';
