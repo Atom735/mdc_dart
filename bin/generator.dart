@@ -11,6 +11,19 @@ final _dbIndex = StringBuffer();
 final filesInProc = <File>{};
 final packs = <MdcPack>{};
 
+String mapTypes(final String s) {
+  switch (s) {
+    case 'string':
+      return 'String';
+    case 'number':
+      return 'num';
+    case 'boolean':
+      return 'bool';
+    default:
+      return s;
+  }
+}
+
 class MdcPack {
   final Directory dirIn;
   final Directory dirOut;
@@ -43,6 +56,7 @@ class MdcPack {
 |(\s+)
 |(})
 |(?:^export\s+interface\s+(\w+)(?:\s+extends\s+((?:\w+)(?:\s*,\s*\w+)*))?\s*{)
+|(?:(\w+)\(([^\)]*)\)\s*:\s*(\w+)\s*;)
       """
           .trim()
           .replaceAll('\r', '')
@@ -58,6 +72,9 @@ class MdcPack {
   static const reCloseBreket = 7;
   static const reExportInterface = 8;
   static const reExportInterfaceExtends = 9;
+  static const reFunctionIdent = 10;
+  static const reFunctionArgs = 11;
+  static const reFunctionRetType = 12;
 
   void ts2dart(File file) {
     if (filesInProc.contains(file)) {
@@ -133,6 +150,25 @@ class MdcPack {
           s.writeln('abstract class $_ident');
           s.write('    implements $_extends {');
         }
+      } else if (match.group(reFunctionIdent) != null) {
+        final _retType = match.group(reFunctionRetType);
+        final _ident = match.group(reFunctionIdent);
+        final _args = match.group(reFunctionArgs);
+
+        var b = false;
+        s.write('${mapTypes(_retType)} $_ident(');
+        _args.split(',').forEach((_arg) {
+          if (_arg.isEmpty) {
+            return;
+          }
+          final v = _arg.split(':');
+          if (b) {
+            s.write(', ');
+          }
+          s.write('${mapTypes(v[1].trim())} ${v[0].trim()}');
+          b = true;
+        });
+        s.write(');');
       }
     }
 
