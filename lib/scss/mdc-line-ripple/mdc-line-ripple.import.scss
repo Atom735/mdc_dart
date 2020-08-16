@@ -1,0 +1,12 @@
+@forward "package:mdc_dart/scss/base/mixins" as mdc-base-*;
+@forward "package:mdc_dart/scss/feature-targeting/variables" as mdc-feature-*;
+@forward "package:mdc_dart/scss/feature-targeting/mixins" as mdc-feature-*;
+@forward "package:mdc_dart/scss/theme/constants" as mdc-theme-*;
+@forward "package:mdc_dart/scss/theme/variables" as mdc-theme-*;
+@forward "package:mdc_dart/scss/animation/variables" as mdc-animation-*;
+@forward "package:mdc_dart/scss/theme/mixins" as mdc-theme-*;
+@forward "mixins" as mdc-line-ripple-*;
+@forward "package:mdc_dart/scss/feature-targeting/functions" as mdc-feature-*;
+@forward "package:mdc_dart/scss/theme/functions" as mdc-theme-*;
+@forward "functions" as mdc-line-ripple-*;
+@forward "mdc-line-ripple";

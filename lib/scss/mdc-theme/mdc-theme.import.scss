@@ -1,0 +1,8 @@
+@forward "package:mdc_dart/scss/feature-targeting/variables" as mdc-feature-*;
+@forward "package:mdc_dart/scss/feature-targeting/mixins" as mdc-feature-*;
+@forward "constants" as mdc-theme-*;
+@forward "variables" as mdc-theme-*;
+@forward "mixins" as mdc-theme-*;
+@forward "package:mdc_dart/scss/feature-targeting/functions" as mdc-feature-*;
+@forward "functions" as mdc-theme-*;
+@forward "mdc-theme";
