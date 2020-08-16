@@ -46,13 +46,15 @@ String mapTypes(String s) {
 final _re = RegExp(
     r"""
 (\/\*[\s\S]*?\*\/|\/\/.*)
-|^(import|export)\s+(\*|{[^}]+}|\w+)(?:\s+(?:as\s+(\w+)\s+)?from\s+'([^']*)')?\s*;
+|^\s*(import|export)\s+(\*|{[^}]+}|\w+)(?:\s+(?:as\s+(\w+)\s+)?from\s+'([^']*)')?\s*;
 |(\s+)
 |(}(?:\s*;)?)
-|(?:^export\s+(interface|class)\s+(\w+)(?:\s+extends\s+((?:[\w<>]+)(?:\s*,\s*[\w<>]+)*))?\s*{)
+|(?:^\s*(?:export\s+)?(interface|class)\s+(\w+)(?:\s+extends\s+((?:[\w<>]+)(?:\s*,\s*[\w<>]+)*))?\s*{)
 |(?:([\w]+(?:<[^\(]+)?)\(([^\)]*)\)\s*:([^;]+);)
-|(?:const\s+(\w+)\s*=\s*{)
+|(?:^\s*(?:export\s+)?const\s+(\w+)\s*=\s*{)
 |(?:(\w+)\s*:\s*(\[|[^\,}]+),?)
+|(?:^\s*(?:export\s+)?enum\s+(\w+)\s*{)
+|(?:(\w+)\s*=\s*([^,}]*)\s*,?)
       """
         .trim()
         .replaceAll('\r', '')
@@ -77,6 +79,9 @@ enum _Enum {
   constIdent,
   constKey,
   constValue,
+  enumIdent,
+  classVarSetKey,
+  classVarSetValue,
 }
 
 extension NumberParsing on Match {
@@ -127,7 +132,19 @@ class MdcPack {
       if (subStr.isNotEmpty) {
         s.write('@Error{$subStr}');
       }
-      if (match.has(_Enum.constKey)) {
+      if (match.has(_Enum.classVarSetKey)) {
+        final _key = match.get(_Enum.classVarSetKey);
+        final _val = match.get(_Enum.classVarSetValue);
+        if (iBracketsList.last.startsWith('enum:')) {
+          s.write('static const $_key = $_val;');
+        } else {
+          s.write('@Error{${match.get(_Enum.full)}}');
+        }
+      } else if (match.has(_Enum.enumIdent)) {
+        final _ident = match.get(_Enum.enumIdent);
+        iBracketsList.add('enum:$_ident');
+        s.write('class $_ident {');
+      } else if (match.has(_Enum.constKey)) {
         final _key = match.get(_Enum.constKey);
         final _value = match.get(_Enum.constValue);
         s.write("'$_key': ");
@@ -168,12 +185,6 @@ class MdcPack {
           } else {
             s.write('$_list');
           }
-
-//  [
-//     'button:not(:disabled)', '[href]:not([aria-disabled="true"])', 'input:not(:disabled)',
-//     'select:not(:disabled)', 'textarea:not(:disabled)', '[tabindex]:not([tabindex="-1"]):not([aria-disabled="true"])',
-//  ].join(', '),
-
         } else {
           s.write(
             '$_value,',
@@ -210,7 +221,7 @@ class MdcPack {
         if (_from != null) {
           s.write("$_type '$_from.dart'${getEntity()}${getAs()};");
         } else {
-          s.write('@ErrorImportOrExport{${match.get(_Enum.full)}}');
+          s.write('/* ${match.get(_Enum.full)} */');
         }
         if (_from != null) {
           if (_from.startsWith('package:mdc_dart/src/')) {
