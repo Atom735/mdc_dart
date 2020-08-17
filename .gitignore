@@ -20,4 +20,6 @@ doc/api/
 *.js.deps
 *.js.map
 
-# lib
+lib
+!lib/**.dart
+!lib/scss

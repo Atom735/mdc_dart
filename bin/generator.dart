@@ -3,9 +3,12 @@ import 'dart:io';
 
 import 'package:path/path.dart' as p;
 
-const pathIn = r'D:\github\material-components-web-7.0.0\packages';
-const pathOut = r'D:\github\mdc_dart\lib\src';
-const pathOutScss = r'D:\github\mdc_dart\lib\scss';
+// const pathIn = r'D:\github\material-components-web-7.0.0\packages';
+const pathIn = r'D:\ARGilyazeev\github\material-components-web\packages';
+// const pathOut = r'D:\github\mdc_dart\lib\src';
+const pathOut = r'D:\ARGilyazeev\github\mdc_dart\lib\src';
+// const pathOutScss = r'D:\github\mdc_dart\lib\scss';
+const pathOutScss = r'D:\ARGilyazeev\github\mdc_dart\lib\scss';
 
 final _dbIndex = StringBuffer();
 final filesInProc = <File>{};
@@ -328,6 +331,21 @@ void main(List<String> args) {
                 .readAsStringSync()
                 .replaceAll('@material/', 'package:mdc_dart/scss/mdc-'));
           }
+        } else if (file is Directory) {
+          final fileName = p.basename(file.path);
+          final _libScss = Directory(p.join(libScss.path, fileName))
+            ..createSync(recursive: false);
+          file.listSync(recursive: false).forEach((_file) {
+            if (_file is File) {
+              final _fileName = p.basename(_file.path);
+              final _fileExt = p.extension(_fileName);
+              if (_fileExt == '.scss') {
+                File(p.join(_libScss.path, _fileName)).writeAsStringSync(_file
+                    .readAsStringSync()
+                    .replaceAll('@material/', 'package:mdc_dart/scss/mdc-'));
+              }
+            }
+          });
         }
       });
     } else {
